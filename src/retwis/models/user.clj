@@ -51,6 +51,7 @@
 (defn logout! []
   (if (logged-in?)
     (do
+      (println "setting " (str "uid:" (session/get :uid) ":auth"))
       (redis/set db (str "uid:" (session/get :uid) ":auth") (random-string 26))
       (session/remove! :auth)
       (session/remove! :username)

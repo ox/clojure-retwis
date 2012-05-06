@@ -18,4 +18,3 @@
       (apply 
         (fn [id] (redis/lpush db (str "uid:" id ":posts") post))
         (redis/get db (str "uid:" (session/get :uid) ":followers"))))))
-      

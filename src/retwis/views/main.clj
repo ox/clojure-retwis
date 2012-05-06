@@ -7,7 +7,9 @@
 
 (defpage "/" []
          (common/layout
-           [:p "Hello " (user/me) "!"]))
+           (if (user/logged-in?)
+             [:p "Hello " (user/me) "!" [:a {:href "/logout"} "logout"]]
+             [:p "You should " [:a {:href "/login"} "login"]])))
 
 (defpage "/login" []
          (common/layout
@@ -16,4 +18,7 @@
 (defpage [:post "/login"] {:keys [username password] :as user}
          (user/login! user)
          (resp/redirect "/"))
-         
+
+(defpage "/logout" []
+         (user/logout!)
+         (resp/redirect "/"))
