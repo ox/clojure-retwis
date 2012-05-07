@@ -8,16 +8,19 @@
 (defpage "/" []
          (common/layout
            (if (user/logged-in?)
-             [:p "Hello " (user/me) "!" [:a {:href "/logout"} "logout"]]
+             [:a {:href "/logout"} "logout"]
              [:p "You should " [:a {:href "/login"} "login"]])))
 
 (defpage "/login" []
          (common/layout
-           (common/login)))
+           common/login))
 
 (defpage [:post "/login"] {:keys [username password] :as user}
-         (user/login! user)
-         (resp/redirect "/"))
+         (if (user/exists? (str username))
+           (do
+             (user/login! user)
+             (resp/redirect "/"))
+           (resp/redirect "/login")))
 
 (defpage "/logout" []
          (user/logout!)

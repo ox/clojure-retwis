@@ -11,6 +11,9 @@
 (defn me []
   (session/get :username))
 
+(defn exists? [username]
+  (not (nil? (redis/get db (str "username:" username ":uid")))))
+
 (defn random-string 
   "generates a random string of a given length"
   [length]
@@ -29,8 +32,12 @@
          (vali/errors? :username))))
 
 (defn logged-in? []
-  (= (redis/get db (str "uid:" (session/get :uid) ":auth"))
-     (redis/get db (str "auth:" (session/get :auth)))))
+  (if (session/get :auth)
+    (if (session/get :user)
+      true
+      (if (not (nil? (redis/get db (str "auth:" (redis/get db (str "uid:" (session/get :uid) ":auth"))))))
+        (session/put! :user true)
+        false))))
 
 ;; Operations
 
@@ -45,6 +52,7 @@
         (session/put! :auth auth)
         (session/put! :username username)
         (session/put! :uid uid)
+        (println (session/get :auth) (session/get :username) (session/get :uid))
         (redis/set db (str "auth:" auth) "true")))
      (vali/set-error :password "Invalid username or password"))))
 
@@ -69,3 +77,4 @@
 (defn init! []
   (add! {:username "admin" :password "admin"})
   (println "adding admin user..."))
+
