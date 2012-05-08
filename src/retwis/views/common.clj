@@ -21,12 +21,12 @@
                     [:div.span10 content]]]
                (include-js "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
                (include-js "/js/bootstrap.min.js")]))
-
-(defpartial login []
-            [:form {:action "/login" :method "POST" :class "well span3 offset4"}
-              [:label "username"]
-              [:input {:type "text" :name "username" :class "span3"}]
-              [:label "password"]
-              [:input {:type "password" :name "password" :class "span3"}]
-              [:br]
-              [:input {:type "submit" :value "login" :class "btn"}]]) 
+;
+;(defpartial login []
+;            [:form {:action "/login" :method "POST" :class "well span3 offset4"}
+;              [:label "username"]
+;              [:input {:type "text" :name "username" :class "span3"}]
+;              [:label "password"]
+;              [:input {:type "password" :name "password" :class "span3"}]
+;              [:br]
+;              [:input {:type "submit" :value "login" :class "btn"}]]) 
