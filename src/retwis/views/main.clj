@@ -11,7 +11,6 @@
 
 ;; partials
 
-
 (defpartial error-text [errors]
             [:div.alert (string/join "" errors)])
 
@@ -26,14 +25,14 @@
 (defpage "/" []
          (common/layout
            (if (user/logged-in?)
-             [:a {:href "/logout"} "logout"]
+             (resp/redirect "/home")
              [:p "You should " [:a {:href "/login"} "login"]])))
 
 ;; sessions
 
 (defpage "/login" {:as user}
          (if (user/logged-in?)
-           (resp/redirect "/")
+           (resp/redirect "/home")
            (common/layout
              (form-to {:class "well span3 offset2"} [:post "/login"] 
                       (user-fields user)
@@ -41,7 +40,7 @@
 
 (defpage [:post "/login"] {:as user}
          (if (user/login! user)
-           (resp/redirect "/")
+           (resp/redirect "/home")
            (render "/login" user)))
 
 (defpage "/logout" []
